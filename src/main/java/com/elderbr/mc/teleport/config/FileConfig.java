@@ -1,4 +1,4 @@
-package config;
+package com.elderbr.mc.teleport.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,4 +1,4 @@
-package util;
+package com.elderbr.mc.teleport.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

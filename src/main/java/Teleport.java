@@ -1,7 +1,7 @@
-import com.elderbr.mc.comandos.Comands;
-import com.elderbr.mc.comandos.CommandTab;
+import com.elderbr.mc.teleport.comandos.Comands;
+import com.elderbr.mc.teleport.comandos.CommandTab;
 import org.bukkit.plugin.java.JavaPlugin;
-import util.Msg;
+import com.elderbr.mc.teleport.util.Msg;
 
 public class Teleport extends JavaPlugin {
 

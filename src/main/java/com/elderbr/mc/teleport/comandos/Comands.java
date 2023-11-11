@@ -1,6 +1,6 @@
-package com.elderbr.mc.comandos;
+package com.elderbr.mc.teleport.comandos;
 
-import config.FileConfig;
+import com.elderbr.mc.teleport.config.FileConfig;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
