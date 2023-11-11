@@ -1,5 +1,6 @@
 import com.elderbr.mc.teleport.comandos.Comands;
 import com.elderbr.mc.teleport.comandos.CommandTab;
+import com.elderbr.mc.teleport.interfaces.Global;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.elderbr.mc.teleport.util.Msg;
 
@@ -9,11 +10,11 @@ public class Teleport extends JavaPlugin {
     public void onEnable() {
 
         Msg.ServidorGold(
-                "\n+-----------------------------------------------------------+\n" +
-                        "|        Teleport ElderBR para vs 1.15*                     |\n" +
-                        "|        Version 1.0                                        |\n" +
+                String.format("\n+-----------------------------------------------------------+\n" +
+                        "|        Teleport                                           |\n" +
+                        "|        Version %s                                        |\n" +
                         "|        Dircord: ElderBR#5398                              |\n" +
-                        "+-----------------------------------------------------------+");
+                        "+-----------------------------------------------------------+", Global.version));
 
         saveDefaultConfig();
 
