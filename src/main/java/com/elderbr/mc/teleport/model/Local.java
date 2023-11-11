@@ -1,28 +1,47 @@
 package com.elderbr.mc.teleport.model;
 
+import com.elderbr.mc.teleport.util.Msg;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+
 public class Local {
 
+    private String name;
     private World world;
+    private Player player;
     private double x, z, y;
 
     public Local() {
     }
 
-    public Local(World world, double x, double z, double y) {
-        this.world = world;
-        this.x = x;
-        this.z = z;
-        this.y = y;
+    public Local(Player player, String name) {
+        this.name = name;
+        world = player.getWorld();
+        this.player = player;
+        x = player.getLocation().getX();
+        z = player.getLocation().getX();
+        y = player.getLocation().getZ();
     }
 
-    public Local(Player player){
-        world = player.getWorld();
-        x = player.getLocation().getX()+0.5;
-        z = player.getLocation().getX()+0.5;
-        y = player.getLocation().getZ()+1;
+    public String getName() {
+        return name;
+    }
+
+    public Local setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Local setPlayer(Player player) {
+        this.player = player;
+        return this;
     }
 
     public World getWorld() {
@@ -35,26 +54,49 @@ public class Local {
     }
 
     public double getX() {
-        return x;
+        return parseDouble(x);
     }
 
-    public void setX(double x) {
+    public Local setX(double x) {
         this.x = x;
+        return this;
     }
 
     public double getZ() {
-        return z;
+        return parseDouble(z);
     }
 
-    public void setZ(double z) {
+    public Local setZ(double z) {
         this.z = z;
+        return this;
     }
 
     public double getY() {
-        return y;
+        return parseDouble(y);
     }
 
-    public void setY(double y) {
+    public Local setY(double y) {
         this.y = y;
+        return this;
+    }
+
+    private double parseDouble(double value){
+        double x = (int) value;
+        return (x > 0 ? x + 0.5 : x - 0.5);
+    }
+
+    public String toLocal() {
+        return world.getName();
+    }
+
+    @Override
+    public String toString() {
+        return "Local{" +
+                "world=" + world +
+                ", player=" + player +
+                ", x=" + x +
+                ", z=" + z +
+                ", y=" + y +
+                '}';
     }
 }
