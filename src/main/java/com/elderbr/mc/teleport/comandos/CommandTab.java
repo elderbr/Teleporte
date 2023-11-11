@@ -1,4 +1,4 @@
-package comandos;
+package com.elderbr.mc.comandos;
 
 import config.FileConfig;
 import org.bukkit.command.Command;

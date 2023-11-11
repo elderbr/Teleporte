@@ -1,5 +1,5 @@
-import comandos.Comands;
-import comandos.CommandTab;
+import com.elderbr.mc.comandos.Comands;
+import com.elderbr.mc.comandos.CommandTab;
 import org.bukkit.plugin.java.JavaPlugin;
 import util.Msg;
 
