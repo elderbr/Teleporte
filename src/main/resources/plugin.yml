@@ -1,11 +1,12 @@
 name: Teleport
 author: Elder Barbosa Romao
-version: 1.0
+version: 2.0
 main: Teleport
-api-version: 1.15
+api-version: 1.19
 commands:
   tpa:
     descrition: Teletransporta para os locais principais
+    permission: true
   sethome:
     permission:
     description: Salva as coordenadas
