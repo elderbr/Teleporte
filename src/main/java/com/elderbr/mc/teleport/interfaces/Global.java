@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
-public class Global {
+public interface Global {
     Plugin MyPlugin = Bukkit.getServer().getPluginManager().getPlugin("Teleport");
     File diretory = MyPlugin.getDataFolder();
     String version = MyPlugin.getDescription().getVersion();
