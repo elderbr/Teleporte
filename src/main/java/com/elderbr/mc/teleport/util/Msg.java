@@ -49,6 +49,10 @@ public class Msg {
         player.sendMessage(ChatColor.RED+ msg);
     }
 
+    public static void PlayerAll(String msg){
+        Bukkit.getServer().broadcastMessage(msg);
+    }
+
 
     //======================= ERRROS ====================================================//
 

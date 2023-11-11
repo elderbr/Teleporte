@@ -1,12 +1,12 @@
 package com.elderbr.mc.teleport.config;
 
+import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import util.Msg;
 
 import java.io.File;
 import java.io.IOException;

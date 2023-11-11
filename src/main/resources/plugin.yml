@@ -6,9 +6,7 @@ api-version: 1.19
 commands:
   tpa:
     descrition: Teletransporta para os locais principais
-    permission: true
-  sethome:
-    permission:
+  setHome:
     description: Salva as coordenadas
   deleteHome:
     description: Apaga o home

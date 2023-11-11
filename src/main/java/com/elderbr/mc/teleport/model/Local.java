@@ -22,8 +22,8 @@ public class Local {
         world = player.getWorld();
         this.player = player;
         x = player.getLocation().getX();
-        z = player.getLocation().getX();
-        y = player.getLocation().getZ();
+        y = player.getLocation().getY();
+        z = player.getLocation().getZ();
     }
 
     public String getName() {
@@ -52,6 +52,10 @@ public class Local {
         this.world = world;
         return this;
     }
+    public Local setWorld(String world) {
+        this.world = Bukkit.getWorld(world);
+        return this;
+    }
 
     public double getX() {
         return parseDouble(x);
@@ -72,7 +76,7 @@ public class Local {
     }
 
     public double getY() {
-        return parseDouble(y);
+        return parseDouble(y)+0.5;
     }
 
     public Local setY(double y) {

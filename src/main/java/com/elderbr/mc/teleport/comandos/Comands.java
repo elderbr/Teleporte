@@ -1,6 +1,10 @@
 package com.elderbr.mc.teleport.comandos;
 
-import com.elderbr.mc.teleport.config.FileConfig;
+import com.elderbr.mc.teleport.controllers.LocalController;
+import com.elderbr.mc.teleport.model.Local;
+import com.elderbr.mc.teleport.util.Msg;
+import com.elderbr.mc.teleport.util.Text;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,51 +12,38 @@ import org.bukkit.entity.Player;
 
 public class Comands implements CommandExecutor {
 
-    private Player player;
-    private FileConfig fileConfig;
-
-    private String arg;
-
+    LocalController localCtrl = new LocalController();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player) {
+        if (sender instanceof Player player) {
 
-            fileConfig = new FileConfig();
-
-            player = ((Player) sender).getPlayer();
-
-
-            arg = "";
-            if (args.length > 0) {
-                for (String x : args) {
-                    arg += x + " ";
-                }
-            }
-            if (command.getName().equalsIgnoreCase("sethome") && args.length > 0) {
-                if (player.isOp()) {
-                    fileConfig.addLocation(player, arg.trim());
-                    player.sendMessage("§a§lA home §6" + arg.trim() + "§a§l foi criada com sucesso.");
-                } else {
-                    player.sendMessage("§e§lSomente os Ops podem usar esse comando!!!");
-                }
-            }
-            if (command.getName().equalsIgnoreCase("deleteHome") && args.length > 0) {
-                if (player.isOp()) {
-                    fileConfig.remove(arg.trim());
-                    player.sendMessage("§a§lA home §6" + arg.trim() + " §a§lfoi deletada com sucesso!!!");
-                } else {
-                    player.sendMessage("§e§lSomente os Ops podem usar esse comando!!!");
-                }
-            }
-
-            if (command.getName().equalsIgnoreCase("tpa")) {
-                if (arg != null && fileConfig.getLocation(arg.trim()) != null) {
-                    player.teleport(fileConfig.getLocation(arg.trim()));
-                } else {
-                    player.sendMessage("§e§lEsse local não existe!!!");
-                }
+            switch (command.getName().toLowerCase()) {
+                case "tpa":
+                    try {
+                        Local local = localCtrl.findByLocal(Text.toString(args));
+                        player.teleport(new Location(local.getWorld(), local.getX(), local.getY(), local.getZ()));
+                    } catch (Exception e) {
+                        Msg.PlayerGold(player, e.getMessage());
+                    }
+                    return true;
+                case "sethome":
+                    try {
+                        localCtrl.add(player, args);
+                        Msg.PlayerAll(String.format("§f§lNovo local criado %s pelo o jogador %s!!!", Text.toString(args), player.getName()));
+                    } catch (Exception e) {
+                        Msg.PlayerGold(player, e.getMessage());
+                    }
+                    return true;
+                case "deletehome":
+                    try {
+                        localCtrl.delete(player, args);
+                        Msg.PlayerAll(String.format("§f§lO local %s foi apagado pelo o jogador %s!!!", Text.toString(args), player.getName()));
+                    } catch (Exception e) {
+                        Msg.PlayerGold(player, e.getMessage());
+                    }
+                    return true;
             }
         }
         return false;
