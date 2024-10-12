@@ -151,7 +151,7 @@ public class FileConfig implements Global {
     }
 
     public YamlConfiguration getConfig(){
-        return config;
+        return YamlConfiguration.loadConfiguration(CONFIG_FILE);
     }
 
     public boolean save() {
