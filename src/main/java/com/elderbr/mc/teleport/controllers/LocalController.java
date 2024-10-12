@@ -31,7 +31,7 @@ public class LocalController {
         }
         ConfigurationSection section = localDAO.findByName(name);
         if (section == null) {
-            throw new Exception(String.format("§f§lO local §e%s §fnão existe!!!", name));
+            throw new Exception(String.format("§f§lO local §e%s§f não existe!!!", name));
         }
         local = new Local();
         local.setWorld(section.getString("world"));
