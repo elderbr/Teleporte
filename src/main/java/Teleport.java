@@ -1,6 +1,7 @@
 import com.elderbr.mc.teleport.comandos.Comands;
 import com.elderbr.mc.teleport.comandos.CommandTab;
 import com.elderbr.mc.teleport.config.FileConfig;
+import com.elderbr.mc.teleport.config.WorldConfig;
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +19,7 @@ public class Teleport extends JavaPlugin {
                         "+-----------------------------------------------------------+", Global.VERSION));
         saveDefaultConfig();
 
-        FileConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
+        WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
 
         getCommand("sethome").setExecutor(new Comands());
         getCommand("sethome").setTabCompleter(new CommandTab());
