@@ -12,5 +12,7 @@ public interface Global {
     File diretory = MyPlugin.getDataFolder();
     String VERSION = MyPlugin.getDescription().getVersion();
 
+    File CONFIG_FILE = new File(diretory, "config.yml");
+
     Set<String> WORLDS_LIST = new TreeSet<>();
 }
