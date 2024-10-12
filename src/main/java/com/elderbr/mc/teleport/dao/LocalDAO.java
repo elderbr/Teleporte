@@ -2,13 +2,11 @@ package com.elderbr.mc.teleport.dao;
 
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.model.Local;
-import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class LocalDAO implements Global {
     private final static File file = new File(diretory, "config.yml");
@@ -21,7 +19,7 @@ public class LocalDAO implements Global {
                 config = YamlConfiguration.loadConfiguration(file);
                 config.set("author", "ElderBR");
                 config.set("discord", "ElderBR#5398");
-                config.set("version", Global.version);
+                config.set("version", Global.VERSION);
                 config.save(file);
             } catch (IOException e) {
                 throw new RuntimeException(e);
