@@ -21,7 +21,9 @@ public class FileConfig implements Global {
     private static FileConfig instance;
     private YamlConfiguration config;
 
-    private static final String WORLDS = "worlds";
+    public static final String AUTHOR = "ElderBR";
+    public static final String DISCORD = "ElderBR#5398";
+    public static final String WORLDS = "worlds";
     private World world;
 
 
@@ -34,7 +36,7 @@ public class FileConfig implements Global {
             Msg.ServidorErro("Erro ao criar a o arquivo config.yml", "FileConfig", getClass(), e);
         }
         config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
-        updateVersion();
+        update();
     }
 
     public static FileConfig getInstance() {
@@ -46,9 +48,16 @@ public class FileConfig implements Global {
         }
     }
 
-    public FileConfig updateVersion() {
+    public FileConfig update() {
+        config.set("author", AUTHOR);
+        config.setComments("author", Arrays.asList("# Desenvolvidor"));
+
+        config.set("discord", DISCORD);
+        config.setComments("discord", Arrays.asList("Entre em contato através do Discord"));
+
         config.set("version", VERSION);
         config.setComments("version", Arrays.asList("Versão atual do Teleport"));
+
         save();
         return instance;
     }
@@ -139,6 +148,10 @@ public class FileConfig implements Global {
             saveWorlds();// Salva a com os nomes dos mundos
         }
         return false;
+    }
+
+    public YamlConfiguration getConfig(){
+        return config;
     }
 
     public boolean save() {
