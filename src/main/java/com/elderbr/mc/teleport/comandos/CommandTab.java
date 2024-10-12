@@ -23,7 +23,7 @@ public class CommandTab implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
         if (sender instanceof Player) {
-            fileConfig = new FileConfig();
+            fileConfig = FileConfig.getInstance();
             locationList = new ArrayList<>();
             player = ((Player) sender).getPlayer();
 
