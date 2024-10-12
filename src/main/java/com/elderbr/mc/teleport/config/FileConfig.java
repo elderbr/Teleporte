@@ -6,11 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +19,7 @@ import java.util.Objects;
 public class FileConfig implements Global {
 
     private static FileConfig instance;
-    private static final File file = new File(diretory, "config.yml");
-    private FileConfiguration yml;
+    private YamlConfiguration config;
 
     private static final String WORLDS = "worlds";
     private World world;
@@ -30,13 +27,13 @@ public class FileConfig implements Global {
 
     private FileConfig() {
         try {
-            if (!file.exists()) {
-                file.createNewFile();
+            if (!CONFIG_FILE.exists()) {
+                CONFIG_FILE.createNewFile();
             }
         } catch (IOException e) {
             Msg.ServidorErro("Erro ao criar a o arquivo config.yml", "FileConfig", getClass(), e);
         }
-        yml = YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
         updateVersion();
     }
 
@@ -50,17 +47,17 @@ public class FileConfig implements Global {
     }
 
     public FileConfig updateVersion() {
-        yml.set("version", VERSION);
-        yml.setComments("version", Arrays.asList("Versão atual do Teleport"));
+        config.set("version", VERSION);
+        config.setComments("version", Arrays.asList("Versão atual do Teleport"));
         save();
         return instance;
     }
 
     public void add(String ID, Object name) {
-        if (yml.getString(ID) == null) {
-            yml.addDefault(ID, name);
+        if (config.getString(ID) == null) {
+            config.addDefault(ID, name);
         } else {
-            yml.set(ID, name);
+            config.set(ID, name);
         }
     }
 
@@ -72,14 +69,14 @@ public class FileConfig implements Global {
     }
 
     public Location getLocation(String name) {
-        world = Bukkit.getWorld(yml.getString(name + ".world"));
-        String[] local = yml.getString(name + ".location").split("\\s");
+        world = Bukkit.getWorld(config.getString(name + ".world"));
+        String[] local = config.getString(name + ".location").split("\\s");
         return new Location(world, Double.parseDouble(local[0]), Double.parseDouble(local[1]), Double.parseDouble(local[2]));
     }
 
     public List<String> list() {
         List<String> list = new ArrayList<>();
-        for (Object local : yml.getKeys(false)) {
+        for (Object local : config.getKeys(false)) {
             list.add(local.toString());
         }
         return list;
@@ -87,7 +84,7 @@ public class FileConfig implements Global {
 
     public List<String> list(String name) {
         List<String> list = new ArrayList<>();
-        for (String local : yml.getKeys(false)) {
+        for (String local : config.getKeys(false)) {
             if (local.contains(name)) {
                 list.add(local);
             }
@@ -97,7 +94,7 @@ public class FileConfig implements Global {
 
 
     public void remove(String arg) {
-        yml.set(arg, null);
+        config.set(arg, null);
         save();
     }
 
@@ -116,18 +113,18 @@ public class FileConfig implements Global {
     }
 
     public boolean saveWorlds() {
-        yml.set(WORLDS, new ArrayList<>(WORLDS_LIST));// Cria o valor worlds no config
-        yml.setComments(WORLDS, Arrays.asList("Mundos criados"));
+        config.set(WORLDS, new ArrayList<>(WORLDS_LIST));// Cria o valor worlds no config
+        config.setComments(WORLDS, Arrays.asList("Mundos criados"));
         return save();
     }
 
     public List<String> findWorldAll() {
-        yml = YamlConfiguration.loadConfiguration(file);
-        if (yml.get(WORLDS) == null || yml.getList(WORLDS).isEmpty()) {// Verificar se existir worlds no config
+        config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+        if (config.get(WORLDS) == null || config.getList(WORLDS).isEmpty()) {// Verificar se existir worlds no config
             saveWorlds();// Salva a com os nomes dos mundos
         }
-        if (!yml.getList(WORLDS).isEmpty()) {
-            for (Object obj : yml.getList(WORLDS)) {
+        if (!config.getList(WORLDS).isEmpty()) {
+            for (Object obj : config.getList(WORLDS)) {
                 String name = obj.toString().replaceAll("\\s", "_").toLowerCase();
                 WORLDS_LIST.add(name);// Adiciona novo mundo na lista de mundos
                 createWorld(name);// Cria novo mundo se não existir
@@ -146,7 +143,7 @@ public class FileConfig implements Global {
 
     public boolean save() {
         try {
-            yml.save(file);
+            config.save(CONFIG_FILE);
             return true;
         } catch (IOException e) {
             Msg.ServidorErro("Erro ao salvar o mc.config.yml", "save()", getClass(), e);
