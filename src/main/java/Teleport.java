@@ -1,5 +1,6 @@
 import com.elderbr.mc.teleport.comandos.TeleportCommand;
 import com.elderbr.mc.teleport.comandos.CommandTab;
+import com.elderbr.mc.teleport.comandos.WorldCommand;
 import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
 import com.elderbr.mc.teleport.interfaces.Global;
@@ -30,6 +31,8 @@ public class Teleport extends JavaPlugin {
 
         getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());
+
+        getCommand("createworld").setExecutor(new WorldCommand());
 
     }
 }
