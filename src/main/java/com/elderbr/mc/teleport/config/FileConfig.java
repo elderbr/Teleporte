@@ -5,7 +5,6 @@ import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -58,6 +57,9 @@ public class FileConfig implements Global {
         config.set("version", VERSION);
         config.setComments("version", Arrays.asList("Versão atual do Teleport"));
 
+        config.set(WORLDS, new ArrayList<>(WORLDS_LIST));
+        config.setComments(WORLDS, Arrays.asList("Lista dos nomes dos mundos criados"));
+
         save();
         return instance;
     }
@@ -107,50 +109,7 @@ public class FileConfig implements Global {
         save();
     }
 
-    /*********************************
-     *
-     *  Criação e de novos mundos
-     *
-     *********************************/
-    public void createWorld(String world) {
-        WORLDS_LIST.add(world);
-        saveWorlds(); // Salva a lista dos nomes dos mundos
-        if (Bukkit.getWorld(world) == null) {
-            WorldCreator create = new WorldCreator(world);
-            create.createWorld();
-        }
-    }
-
-    public boolean saveWorlds() {
-        config.set(WORLDS, new ArrayList<>(WORLDS_LIST));// Cria o valor worlds no config
-        config.setComments(WORLDS, Arrays.asList("Mundos criados"));
-        return save();
-    }
-
-    public List<String> findWorldAll() {
-        config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
-        if (config.get(WORLDS) == null || config.getList(WORLDS).isEmpty()) {// Verificar se existir worlds no config
-            saveWorlds();// Salva a com os nomes dos mundos
-        }
-        if (!config.getList(WORLDS).isEmpty()) {
-            for (Object obj : config.getList(WORLDS)) {
-                String name = obj.toString().replaceAll("\\s", "_").toLowerCase();
-                WORLDS_LIST.add(name);// Adiciona novo mundo na lista de mundos
-                createWorld(name);// Cria novo mundo se não existir
-            }
-        }
-        return new ArrayList<>(WORLDS_LIST);
-    }
-
-    public boolean deleteWorlds(String world) {
-        if (WORLDS_LIST.contains(world)) {
-            WORLDS_LIST.remove(world);// Remove o mundo da lista global
-            saveWorlds();// Salva a com os nomes dos mundos
-        }
-        return false;
-    }
-
-    public YamlConfiguration getConfig(){
+    public YamlConfiguration getConfig() {
         return YamlConfiguration.loadConfiguration(CONFIG_FILE);
     }
 
