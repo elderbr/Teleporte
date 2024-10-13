@@ -12,13 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class LocalConfig implements Global {
+public class TeleportConfig implements Global {
 
-    private static LocalConfig instance;
+    private static TeleportConfig instance;
     private File file = TELEPORT_FILE;
     private YamlConfiguration config;
 
-    private LocalConfig(){
+    private TeleportConfig(){
         try {
             if(!file.exists()){
                 file.createNewFile();
@@ -29,10 +29,10 @@ public class LocalConfig implements Global {
         config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static LocalConfig getInstance(){
-        synchronized (LocalConfig.class) {
+    public static TeleportConfig getInstance(){
+        synchronized (TeleportConfig.class) {
             if (Objects.isNull(instance)) {
-                instance = new LocalConfig();
+                instance = new TeleportConfig();
             }
             return instance;
         }

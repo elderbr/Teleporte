@@ -1,7 +1,6 @@
-import com.elderbr.mc.teleport.comandos.Comands;
+import com.elderbr.mc.teleport.comandos.TeleportCommand;
 import com.elderbr.mc.teleport.comandos.CommandTab;
-import com.elderbr.mc.teleport.config.FileConfig;
-import com.elderbr.mc.teleport.config.LocalConfig;
+import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
@@ -21,15 +20,15 @@ public class Teleport extends JavaPlugin {
         saveDefaultConfig();
 
         WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
-        LocalConfig.getInstance().findAll(); // Carrega a lista dos locais
+        TeleportConfig.getInstance().findAll(); // Carrega a lista dos locais
 
-        getCommand("sethome").setExecutor(new Comands());
+        getCommand("sethome").setExecutor(new TeleportCommand());
         getCommand("sethome").setTabCompleter(new CommandTab());
 
-        getCommand("tpa").setExecutor(new Comands());
+        getCommand("tpa").setExecutor(new TeleportCommand());
         getCommand("tpa").setTabCompleter(new CommandTab());
 
-        getCommand("deleteHome").setExecutor(new Comands());
+        getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());
 
     }

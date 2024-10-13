@@ -1,6 +1,6 @@
 package com.elderbr.mc.teleport.controllers;
 
-import com.elderbr.mc.teleport.config.LocalConfig;
+import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.dao.LocalDAO;
 import com.elderbr.mc.teleport.model.Local;
 import com.elderbr.mc.teleport.util.Text;
@@ -8,18 +8,18 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class LocalController {
+public class TeleportController {
 
     private Local local;
     private String nameLocal;
     private String[] cmd;
     private LocalDAO localDAO = new LocalDAO();
-    private LocalConfig localConfig = LocalConfig.getInstance();
+    private TeleportConfig localConfig = TeleportConfig.getInstance();
     private String command;
 
     private WorldsController worldsCtrl = new WorldsController();
 
-    public LocalController() {
+    public TeleportController() {
     }
 
     public boolean add(@NotNull Player player, @NotNull String[] cmd) throws Exception {
