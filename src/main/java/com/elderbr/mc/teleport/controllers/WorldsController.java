@@ -46,7 +46,11 @@ public class WorldsController {
         if (Objects.isNull(name) || name.isBlank()) {
             throw new RuntimeException(String.format("§l§cNome %s do mundo invalido!", name));
         }
-        World world = worldConfig.findByName(name);
+        String worldName = name;
+        if(!name.contains("world_")){
+            worldName = "world_"+name;
+        }
+        World world = worldConfig.findByName(worldName);
         if (Objects.isNull(world)) {
             throw new RuntimeException(String.format("§l§cNome %s do mundo invalido!", name));
         }
