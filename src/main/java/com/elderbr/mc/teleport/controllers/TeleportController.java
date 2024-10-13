@@ -1,7 +1,6 @@
 package com.elderbr.mc.teleport.controllers;
 
 import com.elderbr.mc.teleport.config.TeleportConfig;
-import com.elderbr.mc.teleport.dao.LocalDAO;
 import com.elderbr.mc.teleport.model.Local;
 import com.elderbr.mc.teleport.util.Text;
 import org.bukkit.Location;
@@ -13,7 +12,6 @@ public class TeleportController {
     private Local local;
     private String nameLocal;
     private String[] cmd;
-    private LocalDAO localDAO = new LocalDAO();
     private TeleportConfig localConfig = TeleportConfig.getInstance();
     private String command;
 
@@ -45,17 +43,15 @@ public class TeleportController {
     public boolean update(@NotNull Player player, @NotNull String[] cmd) throws Exception {
         this.cmd = cmd;
         validation(player, cmd);
-        return localDAO.update(new Local(player, nameLocal));
+        return localConfig.save(player, nameLocal);
     }
 
     public boolean delete(Player player, String[] name) throws Exception {
         validation(player, name);
         if (findByLocal(name) == null) {
-            throw new Exception(String.format("O local §e%s §rnão existe!!!", local.getName()));
+            throw new Exception(String.format("O local §e%s §rnão existe!!!", Text.toString(name)));
         }
-        local = new Local();
-        local.setName(nameLocal);
-        return localDAO.delete(local);
+        return localConfig.delete(nameLocal);
     }
 
     private void validation(Player player, String[] name) throws Exception {
