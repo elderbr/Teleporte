@@ -22,8 +22,7 @@ public class WorldsController {
         if(Objects.isNull(worldName) || worldName.isBlank()){
             throw new RuntimeException("Nome do mundo invalido!");
         }
-        worldConfig.createWorld(worldName); // Salva novo mundo
-        //teleportCtrl.add(player, worldName);// Adiciona o local no arquivo teleport.yml
+        worldConfig.createWorld("world_"+worldName); // Salva novo mundo
         return true;
     }
 
@@ -34,8 +33,7 @@ public class WorldsController {
         if(Objects.isNull(worldName) || worldName.isBlank()){
             throw new RuntimeException("Nome do mundo invalido!");
         }
-        worldConfig.createWorld(worldName, type); // Salva novo mundo escolhendo o tipo
-        //teleportCtrl.add(player, worldName);// Adiciona o local no arquivo teleport.yml
+        worldConfig.createWorld("world_"+worldName, type); // Salva novo mundo escolhendo o tipo
         return true;
     }
 
