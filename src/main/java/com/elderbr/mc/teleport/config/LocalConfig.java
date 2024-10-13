@@ -38,11 +38,12 @@ public class LocalConfig implements Global {
         }
     }
 
-    public void save(Player player, String name) {
-        Block local = player.getLocation().subtract(0, 1, 0).getBlock();
+    public boolean save(Player player, String name) {
+        Block local = player.getLocation().getBlock();
         config.set(name + ".world", player.getWorld().getName());
         config.set(name + ".location", local.getX()+" "+ local.getY()+" "+ local.getZ() );
         save();
+        return true;
     }
 
     public Location findLocal(String name) {
