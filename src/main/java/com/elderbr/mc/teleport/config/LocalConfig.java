@@ -51,6 +51,16 @@ public class LocalConfig implements Global {
         return new Location(world, Double.parseDouble(local[0]), Double.parseDouble(local[1]), Double.parseDouble(local[2]));
     }
 
+    public List<String> findAll(){
+        config = YamlConfiguration.loadConfiguration(file);
+        LOCATION_LIST.clear();
+        for (Object local : config.getKeys(false)) {
+            LOCATION_LIST.add(local.toString());
+        }
+        Collections.sort(LOCATION_LIST);
+        return LOCATION_LIST;
+    }
+
     public boolean save(){
         try{
             config.save(file);
