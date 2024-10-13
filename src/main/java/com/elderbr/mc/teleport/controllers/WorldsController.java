@@ -9,8 +9,11 @@ import java.util.Objects;
 
 public class WorldsController {
 
-    private WorldConfig worldConfig = WorldConfig.getInstance();
-    private TeleportController teleportCtrl = new TeleportController();
+    private WorldConfig worldConfig;
+
+    public WorldsController() {
+        worldConfig = WorldConfig.getInstance();
+    }
 
     public boolean create(Player player, String worldName){
         if(Objects.isNull(player) || !player.isOp()){
@@ -19,22 +22,20 @@ public class WorldsController {
         if(Objects.isNull(worldName) || worldName.isBlank()){
             throw new RuntimeException("Nome do mundo invalido!");
         }
-        String name = "world_".concat(worldName);
-        worldConfig.createWorld(name); // Salva novo mundo
-        teleportCtrl.add(player, name);// Adiciona o local no arquivo teleport.yml
+        worldConfig.createWorld(worldName); // Salva novo mundo
+        //teleportCtrl.add(player, worldName);// Adiciona o local no arquivo teleport.yml
         return true;
     }
 
-    public boolean create(Player player, String worldName, WorldType type) throws Exception {
+    public boolean create(Player player, String worldName, WorldType type) {
         if(Objects.isNull(player) || !player.isOp()){
             throw new RuntimeException("Ops, você não tem permissão para usar esse comando!");
         }
         if(Objects.isNull(worldName) || worldName.isBlank()){
             throw new RuntimeException("Nome do mundo invalido!");
         }
-        String name = "world_".concat(worldName);
-        worldConfig.createWorld(name, type); // Salva novo mundo escolhendo o tipo
-        teleportCtrl.add(player, name);// Adiciona o local no arquivo teleport.yml
+        worldConfig.createWorld(worldName, type); // Salva novo mundo escolhendo o tipo
+        //teleportCtrl.add(player, worldName);// Adiciona o local no arquivo teleport.yml
         return true;
     }
 

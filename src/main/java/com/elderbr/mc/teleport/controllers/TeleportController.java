@@ -25,30 +25,28 @@ public class TeleportController {
         return localConfig.save(player, worldName);
     }
 
-    public Location findByLocal(String[] args) {
-        String name = Text.toString(args);
+    public Location findByLocal(String worldName) {
         Location location = null;
-        if (name.isBlank() || name.length() < 3) {
-            throw new RuntimeException(String.format("§f§lNome §e%s §fé inválido!!!", name));
+        if (worldName.isBlank() || worldName.length() < 3) {
+            throw new RuntimeException(String.format("§f§lNome §e%s §fé inválido!!!", worldName));
         }
         try {
-            location = localConfig.findLocal(name);
+            location = localConfig.findLocal(worldName);
         } catch (Exception e) {
-            location = worldsCtrl.findByName(name).getSpawnLocation();
+            location = worldsCtrl.findByName(worldName).getSpawnLocation();
         }
         return location;
     }
 
-    public boolean update(@NotNull Player player, @NotNull String[] cmd) throws Exception {
-        this.cmd = cmd;
-        validation(player, cmd);
+    public boolean update(@NotNull Player player, @NotNull String worldName) throws Exception {
+        validation(player, worldName);
         return localConfig.save(player, nameLocal);
     }
 
-    public boolean delete(Player player, String[] name) throws Exception {
-        validation(player, name);
-        if (findByLocal(name) == null) {
-            throw new Exception(String.format("O local §e%s §rnão existe!!!", Text.toString(name)));
+    public boolean delete(Player player, String worldName) throws Exception {
+        validation(player, worldName);
+        if (findByLocal(worldName) == null) {
+            throw new Exception(String.format("O local §e%s §rnão existe!!!", worldName));
         }
         return localConfig.delete(nameLocal);
     }
