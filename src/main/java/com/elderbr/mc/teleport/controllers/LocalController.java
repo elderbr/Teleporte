@@ -3,10 +3,8 @@ package com.elderbr.mc.teleport.controllers;
 import com.elderbr.mc.teleport.config.LocalConfig;
 import com.elderbr.mc.teleport.dao.LocalDAO;
 import com.elderbr.mc.teleport.model.Local;
-import com.elderbr.mc.teleport.util.Msg;
 import com.elderbr.mc.teleport.util.Text;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +17,8 @@ public class LocalController {
     private LocalConfig localConfig = LocalConfig.getInstance();
     private String command;
 
+    private WorldsController worldsCtrl = new WorldsController();
+
     public LocalController() {
     }
 
@@ -28,12 +28,18 @@ public class LocalController {
         return localConfig.save(player, Text.toString(cmd));
     }
 
-    public Location findByLocal(String[] args) throws Exception {
+    public Location findByLocal(String[] args) {
         String name = Text.toString(args);
+        Location location = null;
         if (name.isBlank() || name.length() < 3) {
-            throw new Exception(String.format("§f§lNome §e%s §fé inválido!!!", name));
+            throw new RuntimeException(String.format("§f§lNome §e%s §fé inválido!!!", name));
         }
-        return localConfig.findLocal(name);
+        try {
+            location = localConfig.findLocal(name);
+        } catch (Exception e) {
+            location = worldsCtrl.findByName(name).getSpawnLocation();
+        }
+        return location;
     }
 
     public boolean update(@NotNull Player player, @NotNull String[] cmd) throws Exception {
@@ -44,7 +50,7 @@ public class LocalController {
 
     public boolean delete(Player player, String[] name) throws Exception {
         validation(player, name);
-        if(findByLocal(name)==null){
+        if (findByLocal(name) == null) {
             throw new Exception(String.format("O local §e%s §rnão existe!!!", local.getName()));
         }
         local = new Local();
