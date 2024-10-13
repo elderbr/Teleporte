@@ -20,10 +20,9 @@ public class TeleportController {
     public TeleportController() {
     }
 
-    public boolean add(@NotNull Player player, @NotNull String[] cmd) throws Exception {
-        this.cmd = cmd;
-        validation(player, cmd);
-        return localConfig.save(player, Text.toString(cmd));
+    public boolean add(@NotNull Player player, @NotNull String worldName) {
+        validation(player, worldName);
+        return localConfig.save(player, worldName);
     }
 
     public Location findByLocal(String[] args) {
@@ -54,17 +53,17 @@ public class TeleportController {
         return localConfig.delete(nameLocal);
     }
 
-    private void validation(Player player, String[] name) throws Exception {
+    private void validation(Player player, String worldName) {
         if (!player.isOp()) {
-            throw new Exception("§f§lOps, você não tem permissão para usar esse comando!!");
+            throw new RuntimeException("§f§lOps, você não tem permissão para usar esse comando!!");
         }
-        if (name.length < 1) {
-            throw new Exception("§f§lDigite o nome do local!!");
+        if (worldName.length() < 3) {
+            throw new RuntimeException("§f§lDigite o nome do local!!");
         }
 
-        nameLocal = Text.toString(name);
+        nameLocal = worldName;
         if (nameLocal.isBlank() || nameLocal.length() < 3) {
-            throw new Exception("§f§lO nome do local é inválido, digite mais do que 3 caracteres!!!");
+            throw new RuntimeException("§f§lO nome do local é inválido, digite mais do que 3 caracteres!!!");
         }
     }
 }

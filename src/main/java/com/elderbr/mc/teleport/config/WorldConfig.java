@@ -1,5 +1,6 @@
 package com.elderbr.mc.teleport.config;
 
+import com.elderbr.mc.teleport.enums.WorldType;
 import com.elderbr.mc.teleport.interfaces.Global;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -21,8 +22,8 @@ public class WorldConfig implements Global {
         config = FileConfig.getInstance().getConfig();
     }
 
-    public static WorldConfig getInstance(){
-        if(Objects.isNull(instance)){
+    public static WorldConfig getInstance() {
+        if (Objects.isNull(instance)) {
             instance = new WorldConfig();
         }
         return instance;
@@ -37,8 +38,22 @@ public class WorldConfig implements Global {
         }
     }
 
-    public World findByName(String world){
-        if(!config.getList(WORLDS).contains(world)){
+    public void createWorld(String world, WorldType type) {
+        WORLDS_LIST.add(world);
+        save(); // Salva a lista dos nomes dos mundos
+        if (Bukkit.getWorld(world) == null) {
+            WorldCreator create = new WorldCreator(world);
+            switch (type) {
+                case NETHER -> create.environment(World.Environment.NETHER);
+                case THE_END -> create.environment(World.Environment.THE_END);
+                default -> create.environment(World.Environment.NORMAL);
+            }
+            create.createWorld();
+        }
+    }
+
+    public World findByName(String world) {
+        if (!config.getList(WORLDS).contains(world)) {
             throw new RuntimeException(String.format("O mundo %s não existe", world));
         }
         return Bukkit.getWorld(world);
