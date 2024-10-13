@@ -10,38 +10,57 @@ import org.bukkit.entity.Player;
 
 public class TeleportCommand implements CommandExecutor {
 
-    TeleportController teleportCtrl = new TeleportController();
+    private Player player;
+    private String[] args;
+    private TeleportController teleportCtrl = new TeleportController();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (sender instanceof Player player) {
 
+            this.player = player;
+            this.args = args;
+
             switch (command.getName().toLowerCase()) {
                 case "tpa":
-                    try {
-                        player.teleport(teleportCtrl.findByLocal(args));
-                    } catch (Exception e) {
-                        Msg.PlayerGold(player, e.getMessage());
-                    }
-                    return true;
+                    return teleport();
                 case "sethome":
-                    try {
-                        teleportCtrl.add(player, args);
-                        Msg.PlayerAll(String.format("§f§lNovo local criado %s pelo o jogador %s!!!", Text.toString(args), player.getName()));
-                    } catch (Exception e) {
-                        Msg.PlayerGold(player, e.getMessage());
-                    }
-                    return true;
+                    return addLocal();
                 case "deletehome":
-                    try {
-                        teleportCtrl.delete(player, args);
-                        Msg.PlayerAll(String.format("§f§lO local %s foi apagado pelo o jogador %s!!!", Text.toString(args), player.getName()));
-                    } catch (Exception e) {
-                        Msg.PlayerGold(player, e.getMessage());
-                    }
-                    return true;
+                    return deleteLocal();
             }
+        }
+        return false;
+    }
+
+    public boolean teleport() {
+        try {
+            return player.teleport(teleportCtrl.findByLocal(args));
+        } catch (Exception e) {
+            Msg.PlayerGold(player, e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean addLocal() {
+        try {
+            teleportCtrl.add(player, args);
+            Msg.PlayerAll(String.format("§f§lNovo local criado %s pelo o jogador %s!!!", Text.toString(args), player.getName()));
+            return true;
+        } catch (Exception e) {
+            Msg.PlayerGold(player, e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean deleteLocal() {
+        try {
+            teleportCtrl.delete(player, args);
+            Msg.PlayerAll(String.format("§f§lO local %s foi apagado pelo o jogador %s!!!", Text.toString(args), player.getName()));
+            return true;
+        } catch (Exception e) {
+            Msg.PlayerGold(player, e.getMessage());
         }
         return false;
     }
