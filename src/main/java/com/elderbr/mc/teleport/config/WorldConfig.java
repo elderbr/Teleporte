@@ -2,6 +2,7 @@ package com.elderbr.mc.teleport.config;
 
 import com.elderbr.mc.teleport.interfaces.Global;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class WorldConfig implements Global {
 
@@ -37,8 +37,11 @@ public class WorldConfig implements Global {
         }
     }
 
-    public String getFindByName(String world){
-        return config.getString(WORLDS.concat(".").concat(world));
+    public World findByName(String world){
+        if(!config.getList(WORLDS).contains(world)){
+            throw new RuntimeException(String.format("O mundo %s não existe", world));
+        }
+        return Bukkit.getWorld(world);
     }
 
     public List<String> findWorldAll() {
