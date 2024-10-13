@@ -1,6 +1,8 @@
 package com.elderbr.mc.teleport.controllers;
 
 import com.elderbr.mc.teleport.config.WorldConfig;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import java.util.Objects;
 
@@ -8,10 +10,14 @@ public class WorldsController {
 
     private WorldConfig worldConfig = WorldConfig.getInstance();
 
-    public String getFindByName(String world){
-        if(Objects.isNull(world) || world.isBlank()){
-            throw new RuntimeException(String.format("Nome %s do mundo invalido!", world));
+    public World findByName(String name) {
+        if (Objects.isNull(name) || name.isBlank()) {
+            throw new RuntimeException(String.format("Nome %s do mundo invalido!", name));
         }
-        return worldConfig.getFindByName(world);
+        World world = Bukkit.getWorld(worldConfig.getFindByName(name));
+        if (Objects.isNull(world)) {
+            throw new RuntimeException(String.format("Nome %s do mundo invalido!", name));
+        }
+        return world;
     }
 }
