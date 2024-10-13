@@ -61,6 +61,16 @@ public class LocalConfig implements Global {
         return LOCATION_LIST;
     }
 
+    public boolean delete(String world){
+        if(!LOCATION_LIST.isEmpty()){
+            LOCATION_LIST.remove(world);
+            config.set(world, null);
+            save();
+            return true;
+        }
+        return false;
+    }
+
     public boolean save(){
         try{
             config.save(file);
