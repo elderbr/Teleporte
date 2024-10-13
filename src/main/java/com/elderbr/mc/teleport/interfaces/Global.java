@@ -13,6 +13,7 @@ public interface Global {
     String VERSION = MyPlugin.getDescription().getVersion();
 
     File CONFIG_FILE = new File(diretory, "config.yml");
+    File TELEPORT_FILE = new File(diretory, "teleport.yml");
 
     Set<String> WORLDS_LIST = new TreeSet<>();
 }
