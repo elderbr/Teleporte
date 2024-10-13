@@ -2,16 +2,11 @@ package com.elderbr.mc.teleport.config;
 
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -23,8 +18,6 @@ public class FileConfig implements Global {
     public static final String AUTHOR = "ElderBR";
     public static final String DISCORD = "ElderBR#5398";
     public static final String WORLDS = "worlds";
-    private World world;
-
 
     private FileConfig() {
         try {
@@ -62,51 +55,6 @@ public class FileConfig implements Global {
 
         save();
         return instance;
-    }
-
-    public void add(String ID, Object name) {
-        if (config.getString(ID) == null) {
-            config.addDefault(ID, name);
-        } else {
-            config.set(ID, name);
-        }
-    }
-
-
-    public void addLocation(Player player, String name) {
-        add(name + ".world", player.getWorld().getName());
-        add(name + ".location", (int) player.getLocation().getX() + ".5 " + ((int) player.getLocation().getY() + 1) + " " + (int) player.getLocation().getZ() + ".5");
-        save();
-    }
-
-    public Location getLocation(String name) {
-        world = Bukkit.getWorld(config.getString(name + ".world"));
-        String[] local = config.getString(name + ".location").split("\\s");
-        return new Location(world, Double.parseDouble(local[0]), Double.parseDouble(local[1]), Double.parseDouble(local[2]));
-    }
-
-    public List<String> list() {
-        List<String> list = new ArrayList<>();
-        for (Object local : config.getKeys(false)) {
-            list.add(local.toString());
-        }
-        return list;
-    }
-
-    public List<String> list(String name) {
-        List<String> list = new ArrayList<>();
-        for (String local : config.getKeys(false)) {
-            if (local.contains(name)) {
-                list.add(local);
-            }
-        }
-        return list;
-    }
-
-
-    public void remove(String arg) {
-        config.set(arg, null);
-        save();
     }
 
     public YamlConfiguration getConfig() {
