@@ -50,8 +50,10 @@ public class FileConfig implements Global {
         config.set("version", VERSION);
         config.setComments("version", Arrays.asList("Versão atual do Teleport"));
 
-        config.set(WORLDS, new ArrayList<>(WORLDS_LIST));
-        config.setComments(WORLDS, Arrays.asList("Lista dos nomes dos mundos criados"));
+        if(config.get(WORLDS) == null) {
+            config.set(WORLDS, new ArrayList<>(WORLDS_LIST));
+            config.setComments(WORLDS, Arrays.asList("Lista dos nomes dos mundos criados"));
+        }
 
         save();
         return instance;
