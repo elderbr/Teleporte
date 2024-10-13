@@ -1,19 +1,14 @@
 package com.elderbr.mc.teleport.controllers;
 
 import com.elderbr.mc.teleport.config.TeleportConfig;
-import com.elderbr.mc.teleport.model.Local;
-import com.elderbr.mc.teleport.util.Text;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class TeleportController {
 
-    private Local local;
     private String nameLocal;
-    private String[] cmd;
     private TeleportConfig localConfig = TeleportConfig.getInstance();
-    private String command;
 
     private WorldsController worldsCtrl = new WorldsController();
 
@@ -33,7 +28,11 @@ public class TeleportController {
         try {
             location = localConfig.findLocal(worldName);
         } catch (Exception e) {
-            location = worldsCtrl.findByName(worldName).getSpawnLocation();
+            String name = worldName;
+            if (!worldName.contains("world_")) {
+                name = "world_" + worldName;
+            }
+            location = worldsCtrl.findByName(name).getSpawnLocation();
         }
         return location;
     }
