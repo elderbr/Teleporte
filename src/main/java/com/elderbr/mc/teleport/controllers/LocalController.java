@@ -1,9 +1,11 @@
 package com.elderbr.mc.teleport.controllers;
 
+import com.elderbr.mc.teleport.config.LocalConfig;
 import com.elderbr.mc.teleport.dao.LocalDAO;
 import com.elderbr.mc.teleport.model.Local;
 import com.elderbr.mc.teleport.util.Msg;
 import com.elderbr.mc.teleport.util.Text;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,7 @@ public class LocalController {
     private String nameLocal;
     private String[] cmd;
     private LocalDAO localDAO = new LocalDAO();
+    private LocalConfig localConfig = LocalConfig.getInstance();
     private String command;
 
     public LocalController() {
@@ -22,24 +25,15 @@ public class LocalController {
     public boolean add(@NotNull Player player, @NotNull String[] cmd) throws Exception {
         this.cmd = cmd;
         validation(player, cmd);
-        return localDAO.save(new Local(player, nameLocal));
+        return localConfig.save(player, Text.toString(cmd));
     }
 
-    public Local findByLocal(String name) throws Exception {
+    public Location findByLocal(String[] args) throws Exception {
+        String name = Text.toString(args);
         if (name.isBlank() || name.length() < 3) {
             throw new Exception(String.format("§f§lNome §e%s §fé inválido!!!", name));
         }
-        ConfigurationSection section = localDAO.findByName(name);
-        if (section == null) {
-            throw new Exception(String.format("§f§lO local §e%s§f não existe!!!", name));
-        }
-        local = new Local();
-        local.setWorld(section.getString("world"));
-        String[] position = section.getString("location").split("\s");
-        local.setX(Double.parseDouble(position[0]));
-        local.setY(Double.parseDouble(position[1]));
-        local.setZ(Double.parseDouble(position[2]));
-        return local;
+        return localConfig.findLocal(name);
     }
 
     public boolean update(@NotNull Player player, @NotNull String[] cmd) throws Exception {
@@ -50,7 +44,7 @@ public class LocalController {
 
     public boolean delete(Player player, String[] name) throws Exception {
         validation(player, name);
-        if(findByLocal(nameLocal)==null){
+        if(findByLocal(name)==null){
             throw new Exception(String.format("O local §e%s §rnão existe!!!", local.getName()));
         }
         local = new Local();
