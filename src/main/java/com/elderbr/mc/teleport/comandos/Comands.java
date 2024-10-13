@@ -22,8 +22,7 @@ public class Comands implements CommandExecutor {
             switch (command.getName().toLowerCase()) {
                 case "tpa":
                     try {
-                        Local local = localCtrl.findByLocal(Text.toString(args));
-                        player.teleport(new Location(local.getWorld(), local.getX(), local.getY(), local.getZ()));
+                        player.teleport(localCtrl.findByLocal(args));
                     } catch (Exception e) {
                         Msg.PlayerGold(player, e.getMessage());
                     }
