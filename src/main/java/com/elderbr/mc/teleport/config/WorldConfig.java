@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class WorldConfig implements Global {
 
@@ -34,6 +35,10 @@ public class WorldConfig implements Global {
             WorldCreator create = new WorldCreator(world);
             create.createWorld();
         }
+    }
+
+    public String getFindByName(String world){
+        return config.getString(WORLDS.concat(".").concat(world));
     }
 
     public List<String> findWorldAll() {
