@@ -25,6 +25,8 @@ public class WorldCommand implements CommandExecutor {
                         return worldCreateType(player, args);
                     }
                     return worldCreate(player);
+                case "deleteworld":
+                    return worldCtrl.delete(name);
             }
         }
         return false;

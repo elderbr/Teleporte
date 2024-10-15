@@ -12,3 +12,5 @@ commands:
     description: Apaga o home
   createworld:
     description: Cria novo mundo
+  deleteworld:
+    description: Deleta o mundo

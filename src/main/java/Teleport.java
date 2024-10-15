@@ -32,7 +32,9 @@ public class Teleport extends JavaPlugin {
         getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());
 
+        // Worlds
         getCommand("createworld").setExecutor(new WorldCommand());
+        getCommand("deleteworld").setExecutor(new WorldCommand());
 
     }
 }
