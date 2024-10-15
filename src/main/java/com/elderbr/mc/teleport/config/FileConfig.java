@@ -50,7 +50,7 @@ public class FileConfig implements Global {
         config.set("version", VERSION);
         config.setComments("version", Arrays.asList("Versão atual do Teleport"));
 
-        if(config.get(WORLDS) == null) {
+        if (config.get(WORLDS) == null) {
             config.set(WORLDS, new ArrayList<>(WORLDS_LIST));
             config.setComments(WORLDS, Arrays.asList("Lista dos nomes dos mundos criados"));
         }
@@ -61,6 +61,18 @@ public class FileConfig implements Global {
 
     public YamlConfiguration getConfig() {
         return YamlConfiguration.loadConfiguration(CONFIG_FILE);
+    }
+
+    public static boolean deleteWorld(String worldName) {
+        try {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+            WORLDS_LIST.remove(worldName);// Removendo o mundo da lista
+            config.set(WORLDS, new ArrayList<>(WORLDS_LIST));
+            config.save(CONFIG_FILE);
+            return true;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean save() {

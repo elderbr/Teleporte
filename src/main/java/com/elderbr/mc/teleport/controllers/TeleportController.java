@@ -53,10 +53,10 @@ public class TeleportController {
         return localConfig.save(player, nameLocal);
     }
 
-    public boolean delete(Player player, String worldName) throws Exception {
+    public boolean delete(Player player, String worldName) {
         validation(player, worldName);
         if (findByLocal(worldName) == null) {
-            throw new Exception(String.format("O local §e%s §rnão existe!!!", worldName));
+            throw new RuntimeException(String.format("O local §e%s §rnão existe!!!", worldName));
         }
         return localConfig.delete(nameLocal);
     }

@@ -1,8 +1,10 @@
 package com.elderbr.mc.teleport.controllers;
 
+import com.elderbr.mc.teleport.config.FileConfig;
 import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
 import com.elderbr.mc.teleport.enums.WorldType;
+import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,8 +13,9 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.Objects;
 
-public class WorldsController {
+public class WorldsController implements Global {
 
+    private FileConfig config = FileConfig.getInstance();
     private WorldConfig worldConfig;
     private TeleportConfig localConfig = TeleportConfig.getInstance();
 
@@ -61,7 +64,11 @@ public class WorldsController {
         return world;
     }
 
-    public boolean delete(String worldName) {
+    public boolean delete(Player player, String worldName) {
+        if(!player.isOp()){
+            Msg.PlayerGold(player, "Ops, você não tem permissão para usar esse comando!");
+            return false;
+        }
         if (Objects.isNull(worldName) || worldName.isBlank()) {
             throw new RuntimeException("Nome do mundo invalido");
         }
@@ -70,32 +77,32 @@ public class WorldsController {
         if (!unloaded) {
             throw new RuntimeException("Não foi possivel parar o mundo!");
         }
-        File worldFolder = new File(Bukkit.getWorldContainer().getAbsolutePath());
+        File worldFolder = new File(".");
         for (File file : worldFolder.listFiles()) {
             if (!file.isDirectory()) continue;
             if (file.getName().equals(world.getName())) {
-                file.delete();
+                deleteFolder(file);
             }
         }
-        Msg.PlayerAll(String.format("O mundo %s foi apagado!", worldName));
+        FileConfig.deleteWorld(world.getName());// Removendo o mundo da lista
+        TeleportController.getInstance().delete(player, world.getName());// Apagando todos as home do mundo
+        Msg.PlayerAll(String.format("O mundo %s foi apagado!", worldName));// Mensagem para todos os players
         return true;
     }
 
-    private boolean deleteFolder(File folder) {
-        if (!folder.exists()) return true;
-
-        // Deleta todos os arquivos e subdiretórios
+    public void deleteFolder(File folder) {
         File[] files = folder.listFiles();
-        if (files != null) {
+        if (files != null) { // Verifica se há arquivos/pastas na pasta
             for (File file : files) {
                 if (file.isDirectory()) {
-                    deleteFolder(file); // Chamada recursiva para subdiretórios
+                    deleteFolder(file);// Deleta subpastas recursivamente
                 } else {
-                    file.delete(); // Deleta arquivos
+                    file.delete();// Deleta arquivo
                 }
             }
         }
-        // Deleta o diretório em si
-        return folder.delete();
+        folder.delete();// Deleta a pasta em si
     }
+
+
 }
