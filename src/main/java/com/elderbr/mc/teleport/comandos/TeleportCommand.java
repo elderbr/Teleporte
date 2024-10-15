@@ -12,7 +12,7 @@ public class TeleportCommand implements CommandExecutor {
 
     private Player player;
     private String name;
-    private TeleportController teleportCtrl = new TeleportController();
+    private TeleportController teleportCtrl = TeleportController.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

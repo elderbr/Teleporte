@@ -5,14 +5,25 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class TeleportController {
 
+    private static TeleportController instance;
     private String nameLocal;
     private TeleportConfig localConfig = TeleportConfig.getInstance();
 
     private WorldsController worldsCtrl = new WorldsController();
 
-    public TeleportController() {
+    private TeleportController() {}
+
+    public static TeleportController getInstance(){
+        synchronized (TeleportController.class){
+            if(Objects.isNull(instance)){
+                instance = new TeleportController();
+            }
+        }
+        return instance;
     }
 
     public boolean add(@NotNull Player player, @NotNull String worldName) {
