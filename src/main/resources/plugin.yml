@@ -12,6 +12,8 @@ commands:
     description: Apaga o home
   addAdm:
     description: Adicionar um novo administrador
+  removeAdm:
+    description: Remove o adminsitrador
   createworld:
     description: Cria novo mundo
   deleteworld:

@@ -28,6 +28,12 @@ public class AdmCommand implements CommandExecutor {
                              Msg.PlayerAll(String.format("§l§eO jogador %s agora é administrador do Teleport", name));
                          }
                          return isValid;
+                    case "removeadm":
+                        isValid = admCtrl.remove(player, name);
+                        if(isValid) {
+                            Msg.PlayerAll(String.format("§l§eO jogador %s foi removido administração do Teleport", name));
+                        }
+                        return isValid;
                 }
             } catch (AdmExcepetion e) {
                 Msg.PlayerGold(player, e.getMessage());

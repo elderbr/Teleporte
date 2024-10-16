@@ -34,6 +34,7 @@ public class Teleport extends JavaPlugin {
         getCommand("tpa").setTabCompleter(new CommandTab());
 
         getCommand("addAdm").setExecutor(new AdmCommand());
+        getCommand("removeAdm").setExecutor(new AdmCommand());
 
         getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());

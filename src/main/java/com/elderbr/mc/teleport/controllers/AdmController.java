@@ -39,7 +39,22 @@ public class AdmController implements Global {
     public boolean add(Player player, String name) {
         validation(player, name);// Verifica os dados do player e o nome do adm
         List<String> list = config.getStringList(ADM);
+        if(list.contains(name)){// Verificar se o jogador já é adm
+            throw new AdmExcepetion(String.format("Jogador %s já está na lista dos administração!", name));
+        }
         list.add(name);
+        Collections.sort(list);
+        config.set(ADM, list);
+        return save();
+    }
+
+    public boolean remove(Player player, String name){
+        validation(player, name);// Verifica os dados do player e o nome do adm
+        List<String> list = config.getStringList(ADM);
+        if(!list.contains(name)){
+            throw new AdmExcepetion(String.format("Jogador %s não está na lista dos administração!", name));
+        }
+        list.remove(name);
         Collections.sort(list);
         config.set(ADM, list);
         return save();
@@ -51,9 +66,6 @@ public class AdmController implements Global {
         }
         if (Objects.isNull(name) || name.length() < 4 || name.contains(" ")) {
             throw new AdmExcepetion("Nome do jogador invalido!");
-        }
-        if(config.getStringList(ADM).contains(name)){// Verificar se o jogador já é adm
-            throw new AdmExcepetion(String.format("Jogador %s já está na lista dos administração!", name));
         }
     }
 
