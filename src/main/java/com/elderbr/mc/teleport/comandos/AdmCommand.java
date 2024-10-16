@@ -14,6 +14,7 @@ public class AdmCommand implements CommandExecutor {
 
     private AdmController admCtrl = AdmController.getInstance();
     private String name;
+    private boolean isValid;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -22,12 +23,16 @@ public class AdmCommand implements CommandExecutor {
             try {
                 switch (command.getName().toLowerCase()) {
                     case "addadm":
-                        return admCtrl.add(player, name);
+                         isValid = admCtrl.add(player, name);
+                         if(isValid) {
+                             Msg.PlayerAll(String.format("§l§eO jogador %s agora é administrador do Teleport", name));
+                         }
+                         return isValid;
                 }
             } catch (AdmExcepetion e) {
                 Msg.PlayerGold(player, e.getMessage());
             }
         }
-        return false;
+        return true;
     }
 }

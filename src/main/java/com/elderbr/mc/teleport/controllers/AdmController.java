@@ -44,6 +44,9 @@ public class AdmController implements Global {
             throw new AdmExcepetion("Nome do jogador invalido!");
         }
         List<String> list = config.getStringList(ADM);
+        if(list.contains(name)){// Verificar se o jogador já é adm
+            throw new AdmExcepetion(String.format("Jogador %s já está na lista dos administração!", name));
+        }
         list.add(name);
         Collections.sort(list);
         config.set(ADM, list);
