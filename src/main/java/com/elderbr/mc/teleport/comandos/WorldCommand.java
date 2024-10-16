@@ -1,5 +1,6 @@
 package com.elderbr.mc.teleport.comandos;
 
+import com.elderbr.mc.teleport.controllers.TeleportController;
 import com.elderbr.mc.teleport.controllers.WorldsController;
 import com.elderbr.mc.teleport.enums.WorldType;
 import com.elderbr.mc.teleport.util.Text;

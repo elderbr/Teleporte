@@ -85,7 +85,7 @@ public class WorldsController implements Global {
             }
         }
         FileConfig.deleteWorld(world.getName());// Removendo o mundo da lista
-        TeleportController.getInstance().delete(player, world.getName());// Apagando todos as home do mundo
+        TeleportController.getInstance().deleteByNameWorld(player, world.getName());// Apagando todos as home do mundo
         Msg.PlayerAll(String.format("O mundo %s foi apagado!", worldName));// Mensagem para todos os players
         return true;
     }

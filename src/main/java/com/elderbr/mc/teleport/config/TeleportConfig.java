@@ -1,10 +1,13 @@
 package com.elderbr.mc.teleport.config;
 
 import com.elderbr.mc.teleport.interfaces.Global;
+import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -68,6 +71,17 @@ public class TeleportConfig implements Global {
             config.set(world, null);
             save();
             return true;
+        }
+        return false;
+    }
+
+    public boolean deleteByNameWorld(String nameWorld){
+        for(Map.Entry<String, Object> obj : config.getValues(false).entrySet()){
+            MemorySection memory = (MemorySection) obj.getValue();
+            if(memory.getString("world").equals(nameWorld)) {
+                config.set(obj.getKey(), null);
+                save();
+            }
         }
         return false;
     }

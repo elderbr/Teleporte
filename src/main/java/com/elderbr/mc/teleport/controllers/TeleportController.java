@@ -61,6 +61,16 @@ public class TeleportController {
         return localConfig.delete(nameLocal);
     }
 
+    public boolean deleteByNameWorld(Player player, String nameWorld){
+        if(Objects.isNull(player) || !player.isOp()){
+            throw new RuntimeException("§f§lOps, você não tem permissão para usar esse comando!!");
+        }
+        if (Objects.isNull(nameWorld) || nameWorld.isBlank()) {
+            throw new RuntimeException("§f§lO nome do local é inválido, digite mais do que 3 caracteres!!!");
+        }
+        return localConfig.deleteByNameWorld(nameWorld);
+    }
+
     private void validation(Player player, String worldName) {
         if (!player.isOp()) {
             throw new RuntimeException("§f§lOps, você não tem permissão para usar esse comando!!");
