@@ -1,9 +1,10 @@
+import com.elderbr.mc.teleport.comandos.AdmCommand;
 import com.elderbr.mc.teleport.comandos.TeleportCommand;
 import com.elderbr.mc.teleport.comandos.CommandTab;
 import com.elderbr.mc.teleport.comandos.WorldCommand;
 import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
-import com.elderbr.mc.teleport.controllers.PersonController;
+import com.elderbr.mc.teleport.controllers.AdmController;
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,7 +22,7 @@ public class Teleport extends JavaPlugin {
                         "+-----------------------------------------------------------+", Global.VERSION));
         saveDefaultConfig();
 
-        PersonController.getInstance();
+        AdmController.getInstance();
         WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
         TeleportConfig.getInstance().findAll(); // Carrega a lista dos locais
 
@@ -31,6 +32,8 @@ public class Teleport extends JavaPlugin {
 
         getCommand("tpa").setExecutor(new TeleportCommand());
         getCommand("tpa").setTabCompleter(new CommandTab());
+
+        getCommand("addAdm").setExecutor(new AdmCommand());
 
         getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());

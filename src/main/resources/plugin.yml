@@ -10,6 +10,8 @@ commands:
     description: Salva as coordenadas
   deleteHome:
     description: Apaga o home
+  addAdm:
+    description: Adicionar um novo administrador
   createworld:
     description: Cria novo mundo
   deleteworld:
