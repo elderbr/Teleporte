@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class AdmController implements Global {
@@ -25,6 +26,7 @@ public class AdmController implements Global {
             config.setComments(ADM, Arrays.asList("Administradores"));
             save();
         }
+        findAll();
     }
 
     public static AdmController getInstance() {
@@ -43,9 +45,20 @@ public class AdmController implements Global {
             throw new AdmExcepetion(String.format("Jogador %s já está na lista dos administração!", name));
         }
         list.add(name);
+        ADM_LIST.add(name);// Adiciona o nome do novo administrador na variável global
         Collections.sort(list);
         config.set(ADM, list);
         return save();
+    }
+
+    public List<String> findAll(){
+        if (config.getString("adm") == null) {
+            config.set(ADM, Arrays.asList());
+            config.setComments(ADM, Arrays.asList("Administradores"));
+            save();
+        }
+        ADM_LIST.addAll(config.getStringList(ADM));
+        return ADM_LIST.stream().toList();
     }
 
     public boolean remove(Player player, String name){
@@ -55,6 +68,7 @@ public class AdmController implements Global {
             throw new AdmExcepetion(String.format("Jogador %s não está na lista dos administração!", name));
         }
         list.remove(name);
+        ADM_LIST.remove(name);// Remove o nome do novo administrador na variável global
         Collections.sort(list);
         config.set(ADM, list);
         return save();
