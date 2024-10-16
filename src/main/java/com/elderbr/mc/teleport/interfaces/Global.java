@@ -16,6 +16,8 @@ public interface Global {
 
     File CONFIG_FILE = new File(diretory, "config.yml");
 
+    Set<String> ADM_LIST = new TreeSet<>();
+
     // Teleport
     File TELEPORT_FILE = new File(diretory, "teleport.yml");
     List<String> LOCATION_LIST = new ArrayList<>();
