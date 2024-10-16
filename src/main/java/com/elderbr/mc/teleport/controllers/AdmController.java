@@ -40,7 +40,7 @@ public class AdmController implements Global {
         if (Objects.isNull(player) || !player.isOp()) {
             throw new AdmExcepetion("Ops, você não tem permissão para usar esse comando!");
         }
-        if (Objects.isNull(name) || name.length() < 4) {
+        if (Objects.isNull(name) || name.length() < 4 || name.contains(" ")) {
             throw new AdmExcepetion("Nome do jogador invalido!");
         }
         List<String> list = config.getStringList(ADM);
