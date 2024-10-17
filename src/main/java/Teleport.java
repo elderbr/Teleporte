@@ -1,7 +1,4 @@
-import com.elderbr.mc.teleport.comandos.AdmCommand;
-import com.elderbr.mc.teleport.comandos.TeleportCommand;
-import com.elderbr.mc.teleport.comandos.CommandTab;
-import com.elderbr.mc.teleport.comandos.WorldCommand;
+import com.elderbr.mc.teleport.comandos.*;
 import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
 import com.elderbr.mc.teleport.controllers.AdmController;
@@ -34,7 +31,9 @@ public class Teleport extends JavaPlugin {
         getCommand("tpa").setTabCompleter(new CommandTab());
 
         getCommand("addAdm").setExecutor(new AdmCommand());
+        getCommand("addAdm").setTabCompleter(new AdmTab());
         getCommand("removeAdm").setExecutor(new AdmCommand());
+        getCommand("removeAdm").setTabCompleter(new AdmTab());
 
         getCommand("deleteHome").setExecutor(new TeleportCommand());
         getCommand("deleteHome").setTabCompleter(new CommandTab());
