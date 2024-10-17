@@ -57,6 +57,7 @@ public class AdmController implements Global {
             config.setComments(ADM, Arrays.asList("Administradores"));
             save();
         }
+        ADM_LIST.clear();
         ADM_LIST.addAll(config.getStringList(ADM));
         return ADM_LIST.stream().toList();
     }
@@ -68,7 +69,9 @@ public class AdmController implements Global {
             throw new AdmExcepetion(String.format("Jogador %s não está na lista dos administração!", name));
         }
         list.remove(name);
-        ADM_LIST.remove(name);// Remove o nome do novo administrador na variável global
+        ADM_LIST.clear();
+        ADM_LIST.addAll(list);
+
         Collections.sort(list);
         config.set(ADM, list);
         return save();
