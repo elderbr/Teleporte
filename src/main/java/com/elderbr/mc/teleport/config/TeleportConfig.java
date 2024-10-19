@@ -45,6 +45,7 @@ public class TeleportConfig implements Global {
         Block local = player.getLocation().getBlock();
         config.set(name + ".world", player.getWorld().getName());
         config.set(name + ".location", local.getX()+" "+ local.getY()+" "+ local.getZ() );
+        LOCATION_LIST.add(name);
         save();
         return true;
     }
@@ -67,9 +68,9 @@ public class TeleportConfig implements Global {
 
     public boolean delete(String world){
         if(!LOCATION_LIST.isEmpty()){
-            LOCATION_LIST.remove(world);
             config.set(world, null);
             save();
+            LOCATION_LIST.remove(world);// Removendo o nome da home da lista global
             return true;
         }
         return false;
@@ -81,6 +82,7 @@ public class TeleportConfig implements Global {
             if(memory.getString("world").equals(nameWorld)) {
                 config.set(obj.getKey(), null);
                 save();
+                LOCATION_LIST.remove(nameWorld);// Removendo o nome da home da lista global
             }
         }
         return false;
