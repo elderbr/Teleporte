@@ -20,7 +20,7 @@ public class Teleport extends JavaPlugin {
         saveDefaultConfig();
 
         AdmController.getInstance();
-        WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
+        //WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
         TeleportConfig.getInstance().findAll(); // Carrega a lista dos locais
 
 
@@ -39,6 +39,7 @@ public class Teleport extends JavaPlugin {
         getCommand("deleteHome").setTabCompleter(new CommandTab());
 
         // Worlds
+        getCommand("world").setExecutor(new WorldCommand());
         getCommand("createworld").setExecutor(new WorldCommand());
         getCommand("createworld").setTabCompleter(new WorldAutoComplete());
 

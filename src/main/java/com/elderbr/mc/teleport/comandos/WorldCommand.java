@@ -1,8 +1,6 @@
 package com.elderbr.mc.teleport.comandos;
 
-import com.elderbr.mc.teleport.controllers.TeleportController;
 import com.elderbr.mc.teleport.controllers.WorldsController;
-import com.elderbr.mc.teleport.enums.WorldType;
 import com.elderbr.mc.teleport.util.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,13 +20,15 @@ public class WorldCommand implements CommandExecutor {
 
             try {
                 switch (command.getName().toLowerCase()) {
+                    case "world":
+                        return worldCtrl.tpa(player, args);
                     case "createworld":
                         return worldCtrl.create(player, args);
                     case "deleteworld":
                         return worldCtrl.delete(player, name);
                 }
             }catch (Exception e){
-                player.sendMessage(e.getMessage());
+                player.sendMessage("§4§l"+e.getMessage());
             }
         }
         return false;

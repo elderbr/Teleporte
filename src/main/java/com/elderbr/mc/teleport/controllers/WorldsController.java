@@ -3,7 +3,7 @@ package com.elderbr.mc.teleport.controllers;
 import com.elderbr.mc.teleport.config.FileConfig;
 import com.elderbr.mc.teleport.config.TeleportConfig;
 import com.elderbr.mc.teleport.config.WorldConfig;
-import com.elderbr.mc.teleport.enums.WorldType;
+import com.elderbr.mc.teleport.enums.MundoTipo;
 import com.elderbr.mc.teleport.interfaces.Global;
 import com.elderbr.mc.teleport.util.Msg;
 import org.bukkit.Bukkit;
@@ -11,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.List;
 import java.util.Objects;
 
 public class WorldsController implements Global {
@@ -19,10 +18,32 @@ public class WorldsController implements Global {
     private FileConfig config = FileConfig.getInstance();
     private WorldConfig worldConfig;
     private TeleportConfig localConfig = TeleportConfig.getInstance();
-    private WorldType worldType = WorldType.NORMAL;
+    private MundoTipo worldType = MundoTipo.NORMAL;
 
     public WorldsController() {
         worldConfig = WorldConfig.getInstance();
+    }
+
+    public boolean tpa(Player player, String[] args){
+        if(args.length < 1){
+            throw new RuntimeException("Digite o nome do mundo!");
+        }
+        String name = "world_"+args[0].toLowerCase().replaceAll("world_", "");
+        if(!WORLDS_LIST.contains(name)){
+            throw new RuntimeException("O mundo invalido ou não existe!");
+        }
+
+        World world = worldConfig.findByNameNormal(name);// Busca mundo no World
+        if(Objects.isNull(world)){
+            world = worldConfig.findByNameNether(name);// Busca o mundo no Nether
+            if(Objects.isNull(world)){
+                world = worldConfig.findByNameTheEnd(name);// Busca o mundo no The End
+                if(Objects.isNull(world)){
+                    throw new RuntimeException("O mundo invalido ou não existe!");
+                }
+            }
+        }
+        return player.teleport(world.getSpawnLocation());
     }
 
     public boolean create(Player player, String[] args) {
@@ -41,18 +62,18 @@ public class WorldsController implements Global {
 
         if(args.length == 2){
             String type = args[1].toLowerCase();
-            switch (type){
+            switch (type.toLowerCase()){
                 case "normal":
-                    worldType = WorldType.NORMAL;
+                    worldType = MundoTipo.NORMAL;
                     break;
                 case "nether":
-                    worldType = WorldType.NETHER;
+                    worldType = MundoTipo.NETHER;
                     break;
-                case "end":
-                    worldType = WorldType.THE_END;
+                case "the_end":
+                    worldType = MundoTipo.THE_END;
                     break;
                 default:
-                    worldType = WorldType.NORMAL;
+                    worldType = MundoTipo.NORMAL;
             }
         }
 
@@ -116,12 +137,4 @@ public class WorldsController implements Global {
         }
         folder.delete();// Deleta a pasta em si
     }
-
-    public List<String> worldList(String[] args){
-        if(args.length<1){
-            return List.of();
-        }
-        return worldConfig.findWorldAll();
-    }
-
 }

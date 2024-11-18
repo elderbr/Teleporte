@@ -1,7 +1,8 @@
 package com.elderbr.mc.teleport.interfaces;
 
+import com.elderbr.mc.teleport.enums.MundoTipo;
+import com.elderbr.mc.teleport.model.Mundo;
 import org.bukkit.Bukkit;
-import org.bukkit.WorldType;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -20,6 +21,10 @@ public interface Global {
     File TELEPORT_FILE = new File(diretory, "teleport.yml");
     List<String> LOCATION_LIST = new ArrayList<>();
 
-    Set<String> WORLDS_LIST = new TreeSet<>();
-    List<String> WORLDS_TYPE = Arrays.asList("normal", "nether", "the_end");
+    // World
+    String WORLD = "world";
+    String NETHER = "nether";
+    String THE_END = "the_end";
+    Set<String> WORLDS_LIST = new HashSet<>();
+    List<String> WORLDS_TYPE = Arrays.stream(MundoTipo.values()).map(v->v.name()).toList();
 }

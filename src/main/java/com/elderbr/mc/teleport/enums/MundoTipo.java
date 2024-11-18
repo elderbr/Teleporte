@@ -1,5 +1,5 @@
 package com.elderbr.mc.teleport.enums;
 
-public enum WorldType {
+public enum MundoTipo {
     NORMAL, NETHER, THE_END;
 }

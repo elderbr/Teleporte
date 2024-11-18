@@ -1,7 +1,8 @@
 package com.elderbr.mc.teleport.config;
 
-import com.elderbr.mc.teleport.enums.WorldType;
+import com.elderbr.mc.teleport.enums.MundoTipo;
 import com.elderbr.mc.teleport.interfaces.Global;
+import com.elderbr.mc.teleport.model.Mundo;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class WorldConfig implements Global {
 
@@ -18,8 +20,17 @@ public class WorldConfig implements Global {
     private YamlConfiguration config;
     private static final String WORLDS = FileConfig.WORLDS;
 
+    private Mundo mundo = new Mundo();
+    private List<Mundo> WORLDS_NORMAL = new ArrayList<>();
+    private List<Mundo> WORLDS_NETHER = new ArrayList<>();
+    private List<Mundo> WORLDS_THE_END = new ArrayList<>();
+
     private WorldConfig() {
         config = FileConfig.getInstance().getConfig();
+        createWorlds();// Cria a lista de mundos
+        findAllNormal();
+        findAllNether();
+        findAllTheEnd();
     }
 
     public static WorldConfig getInstance() {
@@ -29,26 +40,28 @@ public class WorldConfig implements Global {
         return instance;
     }
 
-    public void createWorld(String world) {
-        WORLDS_LIST.add(world);
-        save(); // Salva a lista dos nomes dos mundos
-        if (Bukkit.getWorld(world) == null) {
-            WorldCreator create = new WorldCreator(world);
-            create.createWorld();
-        }
-    }
-
-    public void createWorld(String world, WorldType type) {
-        WORLDS_LIST.add(world);
-        save(); // Salva a lista dos nomes dos mundos
-        if (Bukkit.getWorld(world) == null) {
-            WorldCreator create = new WorldCreator(world);
+    public World createWorld(String name, MundoTipo type) {
+        try {
+            mundo = new Mundo(name, type);
+            WorldCreator create = new WorldCreator(name);
             switch (type) {
-                case NETHER -> create.environment(World.Environment.NETHER);
-                case THE_END -> create.environment(World.Environment.THE_END);
-                default -> create.environment(World.Environment.NORMAL);
+                case NETHER:
+                    create.environment(World.Environment.NETHER);
+                    saveNether();
+                    break;
+                case THE_END:
+                    create.environment(World.Environment.THE_END);
+                    saveTheEnd();
+                    break;
+                default:
+                    create.environment(World.Environment.NORMAL);
+                    saveNormal();
             }
-            create.createWorld();
+            World world = create.createWorld();// Cria o mundo
+            save();// Salva no arquivo config.yml
+            return world;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criar novo mundo");
         }
     }
 
@@ -59,18 +72,67 @@ public class WorldConfig implements Global {
         return Bukkit.getWorld(world);
     }
 
-    public List<String> findWorldAll() {
-        config = FileConfig.getInstance().getConfig();
-        if (config.get(WORLDS) == null || config.getList(WORLDS).isEmpty()) {// Verificar se existir worlds no config
-            save();// Salva a com os nomes dos mundos
-        }
-        if (!config.getList(WORLDS).isEmpty()) {
-            for (Object obj : config.getList(WORLDS)) {
-                String name = obj.toString().replaceAll("\\s", "_").toLowerCase();
-                WORLDS_LIST.add(name);// Adiciona novo mundo na lista de mundos
+    public World findByNameNormal(String name) {
+        List<String> list = config.getStringList(WORLD);
+        for (String value : list) {
+            if (Objects.equals(value, name)) {
+                return Bukkit.getWorld(name);
             }
         }
-        return new ArrayList<>(WORLDS_LIST);
+        return null;
+    }
+
+    public void findAllNormal() {
+        List<String> list = config.getStringList(WORLD);
+        if (list.isEmpty()) return;
+        for (String value : list) {
+            WorldCreator world = new WorldCreator(value);
+            world.environment(World.Environment.NORMAL);
+            world.createWorld();
+            WORLDS_LIST.add(value);
+        }
+    }
+
+    public void findAllNether() {
+        List<String> list = config.getStringList(NETHER);
+        if (list.isEmpty()) return;
+        for (String value : list) {
+            WorldCreator world = new WorldCreator(value);
+            world.environment(World.Environment.NETHER);
+            world.createWorld();
+            WORLDS_LIST.add(value);
+        }
+    }
+
+    public void findAllTheEnd() {
+        List<String> list = config.getStringList(THE_END);
+        if (list.isEmpty()) return;
+        for (String value : list) {
+            WorldCreator world = new WorldCreator(value);
+            world.environment(World.Environment.THE_END);
+            world.createWorld();
+            WORLDS_LIST.add(value);
+        }
+    }
+
+    public World findByNameNether(String name) {
+        List<String> list = config.getStringList(NETHER);
+        for (String value : list) {
+            if (Objects.equals(value, name)) {
+                return Bukkit.getWorld(name);
+            }
+        }
+        return null;
+    }
+
+    public World findByNameTheEnd(String name) {
+        List<String> list = config.getStringList(THE_END);
+        for (String value : list) {
+            if (Objects.equals(value, name)) {
+                return Bukkit.getWorld(name);
+            }
+        }
+        return null;
     }
 
     public boolean deleteWorlds(String world) {
@@ -81,14 +143,57 @@ public class WorldConfig implements Global {
         return false;
     }
 
+
+    private void saveNormal() {
+        WORLDS_NORMAL.add(mundo);
+        WORLDS_LIST.add(mundo.getName());
+        config.set(WORLD, WORLDS_NORMAL.stream()
+                .map(Mundo::getName)
+                .collect(Collectors.toList()));
+    }
+
+    private void saveNether() {
+        WORLDS_NETHER.add(mundo);
+        WORLDS_LIST.add(mundo.getName());
+        config.set(WORLD, WORLDS_NETHER.stream()
+                .map(Mundo::getName)
+                .collect(Collectors.toList()));
+    }
+
+    private void saveTheEnd() {
+        WORLDS_THE_END.add(mundo);
+        WORLDS_LIST.add(mundo.getName());
+        config.set(WORLD, WORLDS_THE_END.stream()
+                .map(Mundo::getName)
+                .collect(Collectors.toList()));
+    }
+
     public boolean save() {
         try {
-            config.set(WORLDS, new ArrayList<>(WORLDS_LIST));// Cria o valor worlds no config
-            config.setComments(WORLDS, Arrays.asList("Mundos criados"));
             config.save(CONFIG_FILE);
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void createWorlds() {
+        boolean isCreate = false;
+        if (Objects.isNull(config.get(WORLD))) {
+            config.set(WORLD, List.of());
+            config.setComments(WORLD, Arrays.asList("Mundos criados"));
+            isCreate = true;
+        }
+        if (Objects.isNull(config.get(NETHER))) {
+            config.set(NETHER, List.of());
+            isCreate = true;
+        }
+        if (Objects.isNull(config.get(THE_END))) {
+            config.set(THE_END, List.of());
+            isCreate = true;
+        }
+        if (isCreate) {
+            save();
         }
     }
 }

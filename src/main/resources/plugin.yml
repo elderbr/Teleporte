@@ -14,6 +14,8 @@ commands:
     description: Adicionar um novo administrador
   removeAdm:
     description: Remove o adminsitrador
+  world:
+    description: Comando para fazer o teleport para o mundo
   createworld:
     description: Cria novo mundo
   deleteworld:
