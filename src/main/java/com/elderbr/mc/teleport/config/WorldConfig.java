@@ -68,7 +68,6 @@ public class WorldConfig implements Global {
             for (Object obj : config.getList(WORLDS)) {
                 String name = obj.toString().replaceAll("\\s", "_").toLowerCase();
                 WORLDS_LIST.add(name);// Adiciona novo mundo na lista de mundos
-                createWorld(name);// Cria novo mundo se não existir
             }
         }
         return new ArrayList<>(WORLDS_LIST);

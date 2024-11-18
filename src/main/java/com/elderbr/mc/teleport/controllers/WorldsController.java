@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 public class WorldsController implements Global {
@@ -18,33 +19,45 @@ public class WorldsController implements Global {
     private FileConfig config = FileConfig.getInstance();
     private WorldConfig worldConfig;
     private TeleportConfig localConfig = TeleportConfig.getInstance();
+    private WorldType worldType = WorldType.NORMAL;
 
     public WorldsController() {
         worldConfig = WorldConfig.getInstance();
     }
 
-    public boolean create(Player player, String worldName) {
+    public boolean create(Player player, String[] args) {
         if (Objects.isNull(player) || !player.isOp()) {
             throw new RuntimeException("§l§cOps, você não tem permissão para usar esse comando!");
         }
-        if (Objects.isNull(worldName) || worldName.isBlank()) {
-            throw new RuntimeException("§l§cNome do mundo invalido!");
-        }
-        Msg.PlayerAll(String.format("§l§eCriando novo mundo %s!", worldName));
-        worldConfig.createWorld("world_" + worldName); // Salva novo mundo
-        Msg.PlayerAll(String.format("§l§eMundo %s criado com sucesso!", worldName));
-        return true;
-    }
 
-    public boolean create(Player player, String worldName, WorldType type) {
-        if (Objects.isNull(player) || !player.isOp()) {
-            throw new RuntimeException("§l§cOps, você não tem permissão para usar esse comando!");
+        if(args.length < 1){
+            throw new RuntimeException("Digite o nome do mundo!");
         }
+
+        String worldName = args[0];
         if (Objects.isNull(worldName) || worldName.isBlank()) {
             throw new RuntimeException("§l§cNome do mundo invalido!");
         }
+
+        if(args.length == 2){
+            String type = args[1].toLowerCase();
+            switch (type){
+                case "normal":
+                    worldType = WorldType.NORMAL;
+                    break;
+                case "nether":
+                    worldType = WorldType.NETHER;
+                    break;
+                case "end":
+                    worldType = WorldType.THE_END;
+                    break;
+                default:
+                    worldType = WorldType.NORMAL;
+            }
+        }
+
         Msg.PlayerAll(String.format("§l§eCriando novo mundo %s!", worldName));
-        worldConfig.createWorld("world_" + worldName, type); // Salva novo mundo escolhendo o tipo
+        worldConfig.createWorld("world_" + worldName, worldType); // Salva novo mundo escolhendo o tipo
         Msg.PlayerAll(String.format("§l§eMundo %s criado com sucesso!", worldName));
         return true;
     }
@@ -104,5 +117,11 @@ public class WorldsController implements Global {
         folder.delete();// Deleta a pasta em si
     }
 
+    public List<String> worldList(String[] args){
+        if(args.length<1){
+            return List.of();
+        }
+        return worldConfig.findWorldAll();
+    }
 
 }
