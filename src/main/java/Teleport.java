@@ -40,6 +40,8 @@ public class Teleport extends JavaPlugin {
 
         // Worlds
         getCommand("world").setExecutor(new WorldCommand());
+        getCommand("world").setTabCompleter(new WorldAutoComplete());
+
         getCommand("createworld").setExecutor(new WorldCommand());
         getCommand("createworld").setTabCompleter(new WorldAutoComplete());
 

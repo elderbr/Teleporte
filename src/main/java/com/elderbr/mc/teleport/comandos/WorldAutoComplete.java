@@ -24,15 +24,9 @@ public class WorldAutoComplete implements TabCompleter {
         String worldName;
         if (sender instanceof Player player) {
 
-            if (command.getName().equalsIgnoreCase("createworld")) {
-                if (args.length == 2) {
-                    return WORLDS_TYPE;
-                }
-                return List.of();
-            }
-
-            if (command.getName().equalsIgnoreCase("deleteworld")) {
-                if (args.length == 1) {
+            String cmd = command.getName().toLowerCase();
+            switch (cmd) {
+                case "world":
                     worlds.clear();
                     worldName = args[0].toLowerCase();
                     for (String name : WORLDS_LIST) {
@@ -41,7 +35,23 @@ public class WorldAutoComplete implements TabCompleter {
                         }
                     }
                     return worlds.stream().toList();
-                }
+                case "createworld":
+                    if (args.length == 2) {
+                        return WORLDS_TYPE;
+                    }
+                    return List.of();
+                case "deleteworld":
+                    if (args.length == 1) {
+                        worlds.clear();
+                        worldName = args[0].toLowerCase();
+                        for (String name : WORLDS_LIST) {
+                            if (name.toLowerCase().contains(worldName)) {
+                                worlds.add(name);
+                            }
+                        }
+                        return worlds.stream().toList();
+                    }
+                    return List.of();
             }
         }
         return List.of();
