@@ -155,7 +155,7 @@ public class WorldConfig implements Global {
     private void saveNether() {
         WORLDS_NETHER.add(mundo);
         WORLDS_LIST.add(mundo.getName());
-        config.set(WORLD, WORLDS_NETHER.stream()
+        config.set(NETHER, WORLDS_NETHER.stream()
                 .map(Mundo::getName)
                 .collect(Collectors.toList()));
     }
@@ -163,7 +163,7 @@ public class WorldConfig implements Global {
     private void saveTheEnd() {
         WORLDS_THE_END.add(mundo);
         WORLDS_LIST.add(mundo.getName());
-        config.set(WORLD, WORLDS_THE_END.stream()
+        config.set(THE_END, WORLDS_THE_END.stream()
                 .map(Mundo::getName)
                 .collect(Collectors.toList()));
     }
