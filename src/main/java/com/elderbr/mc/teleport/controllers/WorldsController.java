@@ -25,6 +25,7 @@ public class WorldsController implements Global {
     }
 
     public boolean tpa(Player player, String[] args){
+
         if(args.length < 1){
             throw new RuntimeException("Digite o nome do mundo!");
         }
@@ -32,18 +33,7 @@ public class WorldsController implements Global {
         if(!WORLDS_LIST.contains(name)){
             throw new RuntimeException("O mundo invalido ou não existe!");
         }
-
-        World world = worldConfig.findByNameNormal(name);// Busca mundo no World
-        if(Objects.isNull(world)){
-            world = worldConfig.findByNameNether(name);// Busca o mundo no Nether
-            if(Objects.isNull(world)){
-                world = worldConfig.findByNameTheEnd(name);// Busca o mundo no The End
-                if(Objects.isNull(world)){
-                    throw new RuntimeException("O mundo invalido ou não existe!");
-                }
-            }
-        }
-        return player.teleport(world.getSpawnLocation());
+        return player.teleport(findByName(name).getSpawnLocation());
     }
 
     public boolean create(Player player, String[] args) {
@@ -84,16 +74,15 @@ public class WorldsController implements Global {
     }
 
     public World findByName(String name) {
-        if (Objects.isNull(name) || name.isBlank()) {
-            throw new RuntimeException(String.format("§l§cNome %s do mundo invalido!", name));
-        }
-        String worldName = name;
-        if (!name.contains("world_")) {
-            worldName = "world_" + name;
-        }
-        World world = worldConfig.findByName(worldName);
-        if (Objects.isNull(world)) {
-            throw new RuntimeException(String.format("§l§cNome %s do mundo invalido!", name));
+        World world = worldConfig.findByNameNormal(name);// Busca mundo no World
+        if(Objects.isNull(world)){
+            world = worldConfig.findByNameNether(name);// Busca o mundo no Nether
+            if(Objects.isNull(world)){
+                world = worldConfig.findByNameTheEnd(name);// Busca o mundo no The End
+                if(Objects.isNull(world)){
+                    throw new RuntimeException("O mundo invalido ou não existe!");
+                }
+            }
         }
         return world;
     }
