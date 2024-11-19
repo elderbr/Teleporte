@@ -20,7 +20,7 @@ public class Teleport extends JavaPlugin {
         saveDefaultConfig();
 
         AdmController.getInstance();
-        //WorldConfig.getInstance().findWorldAll();// Gera o valor worlds se não existir
+        WorldConfig.getInstance();// Gera o valor worlds se não existir
         TeleportConfig.getInstance().findAll(); // Carrega a lista dos locais
 
 
