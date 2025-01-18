@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandTab implements TabCompleter, Global {
 
@@ -24,9 +25,16 @@ public class CommandTab implements TabCompleter, Global {
         if (sender instanceof Player) {
             player = ((Player) sender).getPlayer();
             if (command.getName().equalsIgnoreCase("tpa")) {
+                // Lista todos os locais criados pelo plugin
                 for (String value : LOCATION_LIST) {
                     if (value.contains(args[0])) {
                         names.add(value);
+                    }
+                }
+                // Lista todos os mundos criados pelo plugin
+                for (String world : WORLDS_LIST) {
+                    if (world.contains(args[0])) {
+                        names.add(world);
                     }
                 }
                 return names;
