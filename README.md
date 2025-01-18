@@ -24,7 +24,7 @@ Somente os ADM podem criar ou deletar ***Homes*** os demais só pode ir para os 
 #### Essa é uma forma para conseguir explorar novos mundo sem precisar resetar o seu mundo atual indicado para quem tem mundo antigo e já explorou boa tarde dele
 
 > Criando novo mundo
->**/createworld `<nome do world>` `<tipo de mundo>`
+>**/createworld `<nome do world>` `<tipo de mundo>`**
 
 > Apagando mundo
->**/deleteworld `<nome do world>`
+>**/deleteworld `<nome do world>`**
