@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 public class WorldsController implements Global {
@@ -62,6 +63,10 @@ public class WorldsController implements Global {
             throw new RuntimeException(String.format("§l§cNome %s do mundo invalido!", name));
         }
         return world;
+    }
+
+    public List<String> findByAll() {
+        return worldConfig.findWorldAll();
     }
 
     public boolean delete(Player player, String worldName) {

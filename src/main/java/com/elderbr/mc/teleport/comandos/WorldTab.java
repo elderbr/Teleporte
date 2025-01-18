@@ -1,54 +1,46 @@
 package com.elderbr.mc.teleport.comandos;
 
-import com.elderbr.mc.teleport.controllers.TeleportController;
 import com.elderbr.mc.teleport.controllers.WorldsController;
-import com.elderbr.mc.teleport.enums.WorldType;
+import com.elderbr.mc.teleport.util.Msg;
 import com.elderbr.mc.teleport.util.Text;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class WorldCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class WorldTab implements TabCompleter {
 
     private String name;
     private WorldsController worldCtrl = new WorldsController();
+    private List<String> worldList = worldCtrl.findByAll();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (sender instanceof Player player) {
             name = Text.toString(args);
-
+            List<String> worlds = new ArrayList<>();
             switch (command.getName().toLowerCase()) {
                 case "createworld":
-                    if (args.length > 1) {
-                        return worldCreateType(player, args);
+                    if(args.length == 2){
+                        worlds.add("normal");
+                        worlds.add("nether");
+                        worlds.add("the_end");
+                        return worlds;
                     }
-                    return worldCreate(player);
+                    return List.of();
                 case "deleteworld":
-                    return worldCtrl.delete(player, name);
+                    for (String worldName : worldList) {
+                        if (worldName.contains(name)) {
+                            worlds.add(worldName.replaceAll("world_",""));
+                        }
+                    }
+                    return worlds;
             }
         }
-        return false;
-    }
-
-    private boolean worldCreate(Player player) {
-        return worldCtrl.create(player, name);
-    }
-
-    private boolean worldCreateType(Player player, String[] args) {
-        name = args[0];
-        String type = "normal";
-        WorldType worldType = WorldType.NORMAL;
-        if (args.length > 1) {
-            type = args[1];
-            if (type.equals("nether")) {
-                worldType = WorldType.NETHER;
-            } else if (type.equals("the_end")) {
-                worldType = WorldType.THE_END;
-            }
-        }
-        return worldCtrl.create(player, name, worldType);
+        return List.of();
     }
 }
